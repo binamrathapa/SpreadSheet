@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -164,5 +165,72 @@ namespace SpreadSheet
 
             }
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            
+                //DataGridViewSelectedRowCollection rows = dataGridView1.SelectedRows;
+                //string val = (string)rows[2].Cells["Late_Time"].Value;
+                //DataGridViewCell cell = dataGridView1.SelectedCells[0] as DataGridViewCell;
+                //string value = cell.Value.ToString();
+                List<int> values = new List<int>();
+                List<int> rowIndexes = new List<int>();
+                List<int> columnIndexes = new List<int>();
+                foreach (DataGridViewCell cell in dataGridView1.SelectedCells)
+                {
+                    var value = dataGridView1.Rows[cell.RowIndex].Cells[cell.ColumnIndex].Value;
+                    values.Add(Convert.ToInt32(value));
+                    rowIndexes.Add(cell.RowIndex);
+                    columnIndexes.Add(cell.ColumnIndex);
+                }
+
+                ArrayList chars = new ArrayList();
+                List<int> uniqueValues = new List<int>();
+
+                int valueIndex = 0;
+                foreach (int s in columnIndexes)
+                {
+                    int charIndex = 0;
+                    for (char c = 'A'; c <= 'Z'; c++)
+                    {
+                        if (charIndex == s)
+                        {
+                            if (!chars.Contains(c))
+                            {
+                                uniqueValues.Add(values[valueIndex]);
+                                chars.Add(c);
+                            }
+                            else
+                            {
+                                uniqueValues[chars.IndexOf(c)] += values[valueIndex];
+                            }
+                        }
+                        charIndex++;
+
+                    }
+                    valueIndex++;
+
+                }
+                string[] letters = new string[chars.Count];
+                int index = 0;
+                foreach (char c in chars)
+                {
+                    letters[index] = c.ToString();
+                    index++;
+                }
+
+                int[] dataValues = new int[uniqueValues.Count];
+                int arrIndex = 0;
+                foreach (int val in uniqueValues)
+                {
+                    dataValues[arrIndex] = val;
+                    arrIndex++;
+                }
+
+            frmBarChart f = new frmBarChart(letters, dataValues);
+                f.Show();
+
+            }
+        }
     }
-}
+

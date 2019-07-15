@@ -13,10 +13,7 @@ namespace SpreadSheet
             switch(operationName.ToUpper())
             {
                 case "SUM":
-                    foreach(var v in values)
-                    {
-                        result += v;
-                    }
+                    
 
                     break;
                 case "AVERAGE":                    
@@ -45,6 +42,15 @@ namespace SpreadSheet
                     break;
 
 
+            }
+            return result;
+        }
+        public double Sum(List<double> values)
+        {
+            double result = 0;
+            foreach (var v in values)
+            {
+                result += v;
             }
             return result;
         }
